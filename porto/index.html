@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Academic Space — Personal Academic Dashboard</title>
+    <!-- Tailwind CSS CDN untuk utilitas tata letak responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Menghubungkan file CSS Eksternal -->
+    <link rel="stylesheet" href="decorate.css">
+</head>
+<body class="bg-[#F8FAFC] dark:bg-[#0B1120] text-[#0F172A] dark:text-[#F8FAFC] min-h-screen flex flex-col md:flex-row transition-colors duration-200">
+
+    <!-- Mobile Header -->
+    <header class="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#111827] border-b border-[#E2E8F0] dark:border-[#263244] sticky top-0 z-40">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md">AS</div>
+            <span class="font-bold text-lg tracking-tight">AcademicSpace</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="toggleTheme()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+            </button>
+            <button onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-50 hidden md:hidden transition-opacity" onclick="toggleMobileMenu()"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-[#111827] border-r border-[#E2E8F0] dark:border-[#263244] flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div>
+            <!-- Logo -->
+            <div class="p-6 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center font-bold text-lg shadow-lg shadow-indigo-500/30">AS</div>
+                    <div>
+                        <h1 class="font-bold text-base tracking-tight">My Academic Space</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Semester Genap 2025/2026</p>
+                    </div>
+                </div>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Profil Mahasiswa -->
+            <div class="px-6 mb-6">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-semibold text-sm">
+                        <span id="user-initials">MA</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between">
+                            <h4 id="display-username" class="text-sm font-semibold truncate">Mahasiswa Aktif</h4>
+                            <button onclick="openSettingsModal()" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline">Edit</button>
+                        </div>
+                        <p id="display-prodi" class="text-xs text-slate-500 dark:text-slate-400 truncate">Teknik Informatika</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Navigasi -->
+            <nav class="px-4 space-y-1">
+                <a href="#" onclick="switchTab('overview')" id="nav-overview" class="nav-link active-nav">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" onclick="switchTab('courses')" id="nav-courses" class="nav-link">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span>Mata Kuliah</span>
+                </a>
+                <a href="#" onclick="switchTab('notes')" id="nav-notes" class="nav-link">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Catatan</span>
+                </a>
+                <a href="#" onclick="switchTab('tasks')" id="nav-tasks" class="nav-link">
+                    <i data-lucide="check-square" class="w-5 h-5"></i>
+                    <span>Tugas & Deadline</span>
+                </a>
+                <a href="#" onclick="switchTab('calendar')" id="nav-calendar" class="nav-link">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span>Kalender Akademik</span>
+                </a>
+                <a href="#" onclick="switchTab('settings')" id="nav-settings" class="nav-link">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer & Theme Toggle -->
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2 text-xs text-slate-500">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Sistem Aktif</span>
+            </div>
+            <button onclick="toggleTheme()" class="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="sun" class="w-3.5 h-3.5 hidden dark:block"></i>
+                <i data-lucide="moon" class="w-3.5 h-3.5 block dark:hidden"></i>
+                <span class="dark:hidden">Dark</span>
+                <span class="hidden dark:inline">Light</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col min-h-screen overflow-x-hidden">
+        <!-- Desktop Topbar -->
+        <header class="hidden md:flex items-center justify-between px-8 py-4 bg-white/80 dark:bg-[#111827]/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30">
+            <div class="flex items-center space-x-4 w-96">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="Cari catatan, tugas, atau mata kuliah..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="openNoteModalForCreate()" class="flex items-center space-x-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-medium shadow-lg shadow-indigo-500/20 transition-smooth">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>Catatan Baru</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Tab Content Container -->
+        <div id="app-content" class="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto"></div>
+    </main>
+
+    <!-- MODAL: Editor Catatan -->
+    <div id="note-modal" class="modal-backdrop hidden">
+        <div class="modal-box max-w-4xl max-h-[90vh] flex flex-col">
+            <div class="p-4 md:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span id="note-autosave-indicator" class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 font-medium flex items-center space-x-1">
+                    <i data-lucide="check" class="w-3 h-3"></i>
+                    <span>Semua perubahan tersimpan</span>
+                </span>
+                <button onclick="closeNoteModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 flex-1">
+                <input type="hidden" id="edit-note-id">
+                <div>
+                    <label class="form-label">Judul Materi</label>
+                    <input type="text" id="edit-note-title" placeholder="Contoh: Pengertian Algoritma" class="w-full text-xl font-bold bg-transparent border-b border-slate-200 dark:border-slate-800 pb-2 focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="form-label">Mata Kuliah</label>
+                        <select id="edit-note-course" class="form-input"></select>
+                    </div>
+                    <div>
+                        <label class="form-label">Pertemuan Ke-</label>
+                        <input type="number" id="edit-note-meeting" min="1" max="16" class="form-input">
+                    </div>
+                    <div>
+                        <label class="form-label">Tanggal</label>
+                        <input type="date" id="edit-note-date" class="form-input">
+                    </div>
+                </div>
+                <!-- Toolbar Formatting -->
+                <div class="flex items-center space-x-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                    <button type="button" onclick="formatText('bold')" class="toolbar-btn" title="Bold"><i data-lucide="bold" class="w-4 h-4"></i></button>
+                    <button type="button" onclick="formatText('italic')" class="toolbar-btn" title="Italic"><i data-lucide="italic" class="w-4 h-4"></i></button>
+                    <button type="button" onclick="formatText('underline')" class="toolbar-btn" title="Underline"><i data-lucide="underline" class="w-4 h-4"></i></button>
+                    <span class="w-px h-5 bg-slate-300 dark:bg-slate-700 mx-1"></span>
+                    <button type="button" onclick="formatText('heading')" class="toolbar-btn font-bold text-xs">H1</button>
+                    <button type="button" onclick="formatText('bullet')" class="toolbar-btn" title="Bullet List"><i data-lucide="list" class="w-4 h-4"></i></button>
+                    <button type="button" onclick="formatText('number')" class="toolbar-btn" title="Numbered List"><i data-lucide="list-ordered" class="w-4 h-4"></i></button>
+                </div>
+                <div>
+                    <label class="form-label">Isi Materi / Catatan</label>
+                    <textarea id="edit-note-content" oninput="triggerAutosave()" rows="12" placeholder="Tuliskan materi perkuliahan..." class="form-input font-mono leading-relaxed"></textarea>
+                </div>
+            </div>
+            <div class="p-4 md:p-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end space-x-3 bg-slate-50/50 dark:bg-slate-900/50">
+                <button onclick="closeNoteModal()" class="btn-secondary">Batal</button>
+                <button onclick="saveNoteFromModal()" class="btn-primary">Simpan Catatan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Tugas -->
+    <div id="task-modal" class="modal-backdrop hidden">
+        <div class="modal-box max-w-lg">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Tambah Tugas Baru</h3>
+                <button onclick="closeTaskModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="form-label">Judul Tugas</label>
+                    <input type="text" id="task-title" placeholder="Contoh: Laporan Praktikum" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">Mata Kuliah</label>
+                    <select id="task-course" class="form-input"></select>
+                </div>
+                <div>
+                    <label class="form-label">Deadline</label>
+                    <input type="date" id="task-deadline" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">Prioritas</label>
+                    <select id="task-priority" class="form-input">
+                        <option value="Tinggi">Tinggi (Urgent)</option>
+                        <option value="Sedang" selected>Sedang (Normal)</option>
+                        <option value="Rendah">Rendah (Santai)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end space-x-3">
+                <button onclick="closeTaskModal()" class="btn-secondary">Batal</button>
+                <button onclick="saveTask()" class="btn-primary">Simpan Tugas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Mata Kuliah -->
+    <div id="course-modal" class="modal-backdrop hidden">
+        <div class="modal-box max-w-lg">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 id="course-modal-title" class="font-bold text-lg">Tambah Mata Kuliah</h3>
+                <button onclick="closeCourseModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="course-edit-id">
+                <div>
+                    <label class="form-label">Nama Mata Kuliah</label>
+                    <input type="text" id="course-name" placeholder="Contoh: Kecerdasan Buatan" class="form-input">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="form-label">Icon (Lucide Name)</label>
+                        <input type="text" id="course-icon" value="book" class="form-input">
+                    </div>
+                    <div>
+                        <label class="form-label">Progress Belajar (%)</label>
+                        <input type="number" id="course-progress" min="0" max="100" value="0" class="form-input">
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end space-x-3">
+                <button onclick="closeCourseModal()" class="btn-secondary">Batal</button>
+                <button onclick="saveCourse()" class="btn-primary">Simpan Mata Kuliah</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Profil -->
+    <div id="settings-modal" class="modal-backdrop hidden">
+        <div class="modal-box max-w-md">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="font-bold text-lg">Edit Profil Mahasiswa</h3>
+                <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="form-label">Nama Mahasiswa</label>
+                    <input type="text" id="settings-username-input" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">Program Studi</label>
+                    <input type="text" id="settings-prodi-input" class="form-input">
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end space-x-3">
+                <button onclick="closeSettingsModal()" class="btn-secondary">Batal</button>
+                <button onclick="saveProfileSettings()" class="btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-3 text-sm font-medium">
+            <i data-lucide="info" class="w-5 h-5 text-indigo-400"></i>
+            <span id="toast-message">Notifikasi</span>
+        </div>
+    </div>
+
+    <!-- Menghubungkan File JavaScript Eksternal -->
+    <script src="fitur.js"></script>
+</body>
+</html>

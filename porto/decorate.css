@@ -1,0 +1,196 @@
+/* Custom Variables & Base Styling */
+:root {
+--primary-light: #4F46E5;
+--primary-dark: #818CF8;
+}
+
+body {
+font-family: 'Inter', sans-serif;
+-webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+
+::-webkit-scrollbar-track {
+background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+background: #cbd5e1;
+border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+background: #334155;
+}
+
+/* Smooth Transitions */
+.transition-smooth {
+transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Navigation Links */
+.nav-link {
+display: flex;
+align-items: center;
+gap: 0.75rem;
+padding: 0.625rem 0.75rem;
+border-radius: 0.75rem;
+font-size: 0.875rem;
+font-weight: 500;
+color: #475569;
+transition: all 0.2s ease;
+}
+
+.dark .nav-link {
+color: #94a3b8;
+}
+
+.nav-link:hover {
+background-color: #f1f5f9;
+}
+
+.dark .nav-link:hover {
+background-color: rgba(30, 41, 59, 0.6);
+}
+
+.nav-link.active-nav {
+background-color: #eef2ff;
+color: #4f46e5;
+}
+
+.dark .nav-link.active-nav {
+background-color: rgba(30, 27, 75, 0.5);
+color: #818cf8;
+}
+
+/* Reusable Form & Button Components */
+.form-label {
+display: block;
+font-size: 0.75rem;
+font-weight: 600;
+color: #64748b;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+margin-bottom: 0.25rem;
+}
+
+.form-input {
+width: 100%;
+padding: 0.5rem 0.75rem;
+background-color: #f8fafc;
+border: 1px solid #e2e8f0;
+border-radius: 0.75rem;
+font-size: 0.875rem;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dark .form-input {
+background-color: #0f172a;
+border-color: #1e293b;
+color: #f8fafc;
+}
+
+.form-input:focus {
+outline: none;
+border-color: #4f46e5;
+box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.btn-primary {
+padding: 0.5rem 1.25rem;
+background-color: #4f46e5;
+color: #ffffff;
+border-radius: 0.75rem;
+font-size: 0.875rem;
+font-weight: 500;
+box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+background-color: #4338ca;
+}
+
+.btn-secondary {
+padding: 0.5rem 1.25rem;
+border: 1px solid #e2e8f0;
+border-radius: 0.75rem;
+font-size: 0.875rem;
+font-weight: 500;
+transition: background-color 0.2s;
+}
+
+.dark .btn-secondary {
+border-color: #1e293b;
+}
+
+.btn-secondary:hover {
+background-color: #f1f5f9;
+}
+
+.dark .btn-secondary:hover {
+background-color: #1e293b;
+}
+
+/* Modal Layout */
+.modal-backdrop {
+position: fixed;
+inset: 0;
+background-color: rgba(0, 0, 0, 0.6);
+backdrop-filter: blur(4px);
+z-index: 50;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 1rem;
+}
+
+.modal-box {
+background-color: #ffffff;
+border: 1px solid #e2e8f0;
+border-radius: 1rem;
+width: 100%;
+box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+overflow: hidden;
+animation: modalZoom 0.15s ease-out;
+}
+
+.dark .modal-box {
+background-color: #111827;
+border-color: #1e293b;
+}
+
+.toolbar-btn {
+padding: 0.5rem;
+border-radius: 0.5rem;
+color: #334155;
+transition: background-color 0.15s;
+}
+
+.dark .toolbar-btn {
+color: #cbd5e1;
+}
+
+.toolbar-btn:hover {
+background-color: #ffffff;
+}
+
+.dark .toolbar-btn:hover {
+background-color: #1e293b;
+}
+
+@keyframes modalZoom {
+from {
+opacity: 0;
+transform: scale(0.96);
+}
+to {
+opacity: 1;
+transform: scale(1);
+}
+}
